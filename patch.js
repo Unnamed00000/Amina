@@ -7,6 +7,15 @@ function applyAminaPatch() {
   }
 
   style.textContent = `
+    html, body {
+      overflow-x: hidden !important;
+      overscroll-behavior-y: contain !important;
+    }
+
+    .app-shell {
+      overscroll-behavior-y: contain !important;
+    }
+
     .logo::before,
     .app-shell .stage-logo {
       color: #ff4fc3 !important;
@@ -55,16 +64,13 @@ function applyAminaPatch() {
       padding: 0 !important;
     }
 
-    #langBtn {
+    #langBtn,
+    #langBtn .flag {
       font-size: 31px !important;
       line-height: 1 !important;
     }
 
-    #langBtn .flag {
-      display: block !important;
-      font-size: 31px !important;
-      line-height: 1 !important;
-    }
+    #langBtn .flag { display: block !important; }
 
     .circle-btn svg,
     .round-control svg {
@@ -124,25 +130,22 @@ function applyAminaPatch() {
 
     @media (max-width: 620px) {
       html, body {
-        width: 100%;
-        min-height: 100%;
+        width: 100% !important;
+        min-height: 100% !important;
         overflow-x: hidden !important;
         overflow-y: auto !important;
+        overscroll-behavior-y: contain !important;
       }
 
       body {
         position: static !important;
-        overscroll-behavior-y: contain;
+        touch-action: pan-y !important;
       }
 
-      .app-shell {
-        min-height: 100dvh !important;
-        height: auto !important;
-        overflow-x: hidden !important;
-        overflow-y: auto !important;
-      }
-
-      .page {
+      .app-shell,
+      .page,
+      .game-page,
+      .quiz-stage {
         width: calc(100% - 18px) !important;
         min-height: 100dvh !important;
         height: auto !important;
@@ -150,16 +153,7 @@ function applyAminaPatch() {
         overflow-y: visible !important;
         padding: 10px 0 12px !important;
         box-sizing: border-box !important;
-      }
-
-      .game-page,
-      .quiz-stage {
-        width: calc(100% - 18px) !important;
-        height: 100dvh !important;
-        min-height: 100dvh !important;
-        overflow: hidden !important;
-        padding: 10px 0 10px !important;
-        box-sizing: border-box !important;
+        overscroll-behavior-y: contain !important;
       }
 
       .topbar,
