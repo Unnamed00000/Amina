@@ -9,6 +9,10 @@ body {
   font-family: 'Lilita One', 'Arial Black', 'Trebuchet MS', system-ui, sans-serif;
 }
 
+.topbar {
+  min-height: 86px;
+}
+
 .logo {
   font-size: 0;
   letter-spacing: 0;
@@ -17,19 +21,25 @@ body {
 .logo::before {
   content: 'Amina-App';
   font-family: var(--fun-font);
-  font-size: clamp(24px, 2.4vw, 34px);
-  color: #ffffff;
+  font-size: clamp(44px, 5vw, 68px);
+  color: #ff4fc3;
   letter-spacing: 1px;
   text-shadow:
-    0 3px 0 rgba(1, 28, 70, 0.72),
-    0 6px 0 rgba(0, 72, 150, 0.35),
-    0 10px 22px rgba(0, 0, 0, 0.28);
+    0 4px 0 rgba(110, 0, 90, 0.70),
+    0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+.app-shell .stage-logo {
+  font-size: clamp(48px, 5.6vw, 78px) !important;
+  color: #ff4fc3 !important;
+  text-shadow:
+    0 4px 0 rgba(110, 0, 90, 0.70),
+    0 10px 24px rgba(0, 0, 0, 0.28) !important;
 }
 
 .hero,
 .cards,
 .title,
-.pill,
 .category-card,
 .category-card h2,
 .category-card p,
@@ -76,10 +86,13 @@ body {
     0 5px 12px rgba(0, 0, 0, 0.24);
 }
 
+.hero .pill,
 .pill {
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.22),
-    0 4px 10px rgba(0, 0, 0, 0.18);
+  font-family: Arial, Helvetica, system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-shadow: none !important;
 }
 
 .question,
@@ -122,8 +135,16 @@ body {
 }
 
 @media (max-width: 620px) {
+  .topbar {
+    min-height: 70px;
+  }
+
   .logo::before {
-    font-size: 24px;
+    font-size: 38px;
+  }
+
+  .app-shell .stage-logo {
+    font-size: 38px !important;
   }
 
   .title {
@@ -134,5 +155,10 @@ body {
     font-size: 19px !important;
     line-height: 1.4;
     letter-spacing: 0;
+  }
+
+  .hero .pill,
+  .pill {
+    font-size: 13px;
   }
 }
