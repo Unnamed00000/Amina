@@ -55,6 +55,17 @@ function applyAminaPatch() {
       padding: 0 !important;
     }
 
+    #langBtn {
+      font-size: 31px !important;
+      line-height: 1 !important;
+    }
+
+    #langBtn .flag {
+      display: block !important;
+      font-size: 31px !important;
+      line-height: 1 !important;
+    }
+
     .circle-btn svg,
     .round-control svg {
       width: 34px !important;
@@ -114,23 +125,33 @@ function applyAminaPatch() {
     @media (max-width: 620px) {
       html, body {
         width: 100%;
-        height: 100%;
-        overflow: hidden !important;
+        min-height: 100%;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
       }
 
       body {
-        position: fixed;
-        inset: 0;
-        overscroll-behavior: none;
+        position: static !important;
+        overscroll-behavior-y: contain;
       }
 
       .app-shell {
         min-height: 100dvh !important;
-        height: 100dvh !important;
-        overflow: hidden !important;
+        height: auto !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
       }
 
-      .page,
+      .page {
+        width: calc(100% - 18px) !important;
+        min-height: 100dvh !important;
+        height: auto !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
+        padding: 10px 0 12px !important;
+        box-sizing: border-box !important;
+      }
+
       .game-page,
       .quiz-stage {
         width: calc(100% - 18px) !important;
@@ -157,6 +178,9 @@ function applyAminaPatch() {
         height: 44px !important;
         box-shadow: 0 4px 0 rgba(5,75,160,.38), 0 10px 16px rgba(0,0,0,.14) !important;
       }
+
+      #langBtn,
+      #langBtn .flag { font-size: 24px !important; }
 
       .circle-btn svg,
       .round-control svg {
@@ -355,17 +379,6 @@ function applyAminaPatch() {
       button.dataset.iconReady = 'home';
     }
   });
-
-  const langBtn = document.querySelector('#langBtn');
-  if (langBtn && langBtn.dataset.iconReady !== 'home') {
-    langBtn.innerHTML = homeSvg;
-    langBtn.dataset.iconReady = 'home';
-    langBtn.onclick = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      window.location.href = './';
-    };
-  }
 
   document.querySelectorAll('[data-cat="geo"], [data-cat="social"]').forEach((card) => {
     card.onclick = (event) => {
