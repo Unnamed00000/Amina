@@ -16,9 +16,7 @@ function applyAminaPatch() {
       text-shadow: 0 4px 0 rgba(110,0,90,.7), 0 10px 24px rgba(0,0,0,.28) !important;
     }
 
-    .app-shell .stage-logo::after {
-      content: '' !important;
-    }
+    .app-shell .stage-logo::after { content: '' !important; }
 
     .hero .pill,
     .pill {
@@ -29,6 +27,7 @@ function applyAminaPatch() {
       text-shadow: none !important;
     }
 
+    .top-actions,
     .stage-actions {
       position: absolute !important;
       top: 0 !important;
@@ -36,9 +35,10 @@ function applyAminaPatch() {
       display: flex !important;
       gap: 14px !important;
       align-items: center !important;
-      z-index: 5 !important;
+      z-index: 20 !important;
     }
 
+    .circle-btn,
     .round-control {
       width: 72px !important;
       height: 72px !important;
@@ -47,13 +47,15 @@ function applyAminaPatch() {
       background: #ffffff !important;
       color: #0b61c9 !important;
       box-shadow: 0 7px 0 rgba(5,75,160,.38), 0 16px 24px rgba(0,0,0,.15) !important;
-      font-size: 34px !important;
+      font-size: 0 !important;
       font-weight: 1000 !important;
       display: grid !important;
       place-items: center !important;
       cursor: pointer !important;
+      padding: 0 !important;
     }
 
+    .circle-btn svg,
     .round-control svg {
       width: 34px !important;
       height: 34px !important;
@@ -72,9 +74,7 @@ function applyAminaPatch() {
 
     .stage-card[data-op] .num,
     .stage-card[data-op] p,
-    .stage-card[data-op] h2 {
-      color: #ffffff !important;
-    }
+    .stage-card[data-op] h2 { color: #ffffff !important; }
 
     .stage-card[data-level="easy"] {
       background: linear-gradient(145deg,#28dc79,#12ba5f) !important;
@@ -83,9 +83,9 @@ function applyAminaPatch() {
     }
 
     .stage-card[data-level="medium"] {
-      background: linear-gradient(145deg,#ffe76a,#ffc72a) !important;
-      color: #5d4100 !important;
-      box-shadow: 0 11px 0 #d99b00, 0 18px 28px rgba(0,0,0,.18), inset 0 0 0 5px rgba(255,255,255,.28) !important;
+      background: linear-gradient(145deg,#42d8ff,#1688e8) !important;
+      color: #ffffff !important;
+      box-shadow: 0 11px 0 #0761b7, 0 18px 28px rgba(0,0,0,.18), inset 0 0 0 5px rgba(255,255,255,.25) !important;
     }
 
     .stage-card[data-level="hard"] {
@@ -101,38 +101,58 @@ function applyAminaPatch() {
     }
 
     .stage-card[data-level] .num,
-    .stage-card[data-level] h2 {
-      color: inherit !important;
-    }
+    .stage-card[data-level] h2 { color: inherit !important; }
 
     .stage-card[data-level="easy"] .num,
+    .stage-card[data-level="medium"] .num,
     .stage-card[data-level="hard"] .num,
-    .stage-card[data-level="impossible"] .num {
-      color: rgba(255,255,255,.92) !important;
-    }
-
-    .stage-card[data-level="medium"] .num {
-      color: rgba(93,65,0,.55) !important;
-    }
+    .stage-card[data-level="impossible"] .num { color: rgba(255,255,255,.92) !important; }
 
     @media (max-width: 620px) {
       .logo::before,
-      .app-shell .stage-logo {
-        font-size: 38px !important;
-      }
+      .app-shell .stage-logo { font-size: 38px !important; }
 
+      .circle-btn,
       .round-control {
         width: 54px !important;
         height: 54px !important;
-        font-size: 26px !important;
       }
 
+      .circle-btn svg,
       .round-control svg {
         width: 27px !important;
         height: 27px !important;
       }
     }
   `;
+
+  const soundSvg = '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"></path><path d="M16 8.5a4 4 0 0 1 0 7"></path><path d="M18.5 6a7 7 0 0 1 0 12"></path></svg>';
+  const homeSvg = '<svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"></path><path d="M6 10.5V20h12v-9.5"></path><path d="M10 20v-6h4v6"></path></svg>';
+
+  document.querySelectorAll('#soundBtn, #soundRound, .patch-sound').forEach((button) => {
+    if (button.dataset.iconReady !== 'sound') {
+      button.innerHTML = soundSvg;
+      button.dataset.iconReady = 'sound';
+    }
+  });
+
+  document.querySelectorAll('#homeRound, .patch-home').forEach((button) => {
+    if (button.dataset.iconReady !== 'home') {
+      button.innerHTML = homeSvg;
+      button.dataset.iconReady = 'home';
+    }
+  });
+
+  const langBtn = document.querySelector('#langBtn');
+  if (langBtn && langBtn.dataset.iconReady !== 'home') {
+    langBtn.innerHTML = homeSvg;
+    langBtn.dataset.iconReady = 'home';
+    langBtn.onclick = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      window.location.href = './';
+    };
+  }
 
   document.querySelectorAll('[data-cat="geo"], [data-cat="social"]').forEach((card) => {
     card.onclick = (event) => {
@@ -154,17 +174,11 @@ function applyAminaPatch() {
     const actions = document.createElement('div');
     actions.className = 'stage-actions';
     actions.innerHTML = `
-      <button class="round-control patch-sound" aria-label="Sound">
-        <svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"></path><path d="M16 8.5a4 4 0 0 1 0 7"></path><path d="M18.5 6a7 7 0 0 1 0 12"></path></svg>
-      </button>
-      <button class="round-control patch-home" aria-label="Home">
-        <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"></path><path d="M6 10.5V20h12v-9.5"></path><path d="M10 20v-6h4v6"></path></svg>
-      </button>
+      <button class="round-control patch-sound" aria-label="Sound">${soundSvg}</button>
+      <button class="round-control patch-home" aria-label="Home">${homeSvg}</button>
     `;
     top.appendChild(actions);
-    actions.querySelector('.patch-home').onclick = () => {
-      window.location.href = './';
-    };
+    actions.querySelector('.patch-home').onclick = () => { window.location.href = './'; };
     actions.querySelector('.patch-sound').onclick = () => {
       const off = localStorage.aminaSound === 'off';
       localStorage.aminaSound = off ? 'on' : 'off';
