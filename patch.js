@@ -108,20 +108,233 @@ function applyAminaPatch() {
     .stage-card[data-level="hard"] .num,
     .stage-card[data-level="impossible"] .num { color: rgba(255,255,255,.92) !important; }
 
+    .start-row,
+    #startBtn { display: none !important; }
+
     @media (max-width: 620px) {
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden !important;
+      }
+
+      body {
+        position: fixed;
+        inset: 0;
+        overscroll-behavior: none;
+      }
+
+      .app-shell {
+        min-height: 100dvh !important;
+        height: 100dvh !important;
+        overflow: hidden !important;
+      }
+
+      .page,
+      .game-page,
+      .quiz-stage {
+        width: calc(100% - 18px) !important;
+        height: 100dvh !important;
+        min-height: 100dvh !important;
+        overflow: hidden !important;
+        padding: 10px 0 10px !important;
+        box-sizing: border-box !important;
+      }
+
+      .topbar,
+      .stage-top {
+        height: 48px !important;
+        min-height: 48px !important;
+        margin-bottom: 4px !important;
+      }
+
       .logo::before,
-      .app-shell .stage-logo { font-size: 38px !important; }
+      .app-shell .stage-logo { font-size: 30px !important; }
 
       .circle-btn,
       .round-control {
-        width: 54px !important;
-        height: 54px !important;
+        width: 44px !important;
+        height: 44px !important;
+        box-shadow: 0 4px 0 rgba(5,75,160,.38), 0 10px 16px rgba(0,0,0,.14) !important;
       }
 
       .circle-btn svg,
       .round-control svg {
-        width: 27px !important;
-        height: 27px !important;
+        width: 23px !important;
+        height: 23px !important;
+      }
+
+      .top-actions,
+      .stage-actions { gap: 8px !important; }
+
+      .stage-back {
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 24px !important;
+        box-shadow: 0 4px 0 rgba(5,75,160,.38), 0 10px 16px rgba(0,0,0,.14) !important;
+      }
+
+      .hero { padding-top: 4px !important; }
+
+      .hero .pill,
+      .pill {
+        font-size: 11px !important;
+        padding: 7px 11px !important;
+      }
+
+      .title {
+        font-size: clamp(42px, 12vw, 64px) !important;
+        line-height: .9 !important;
+        margin: 10px 0 8px !important;
+      }
+
+      .hero .subtitle {
+        font-size: 15px !important;
+        line-height: 1.25 !important;
+        margin-top: 8px !important;
+        margin-bottom: 10px !important;
+      }
+
+      .cards {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        margin-top: 10px !important;
+      }
+
+      .category-card {
+        min-height: 104px !important;
+        padding: 12px 16px !important;
+        border-radius: 20px !important;
+      }
+
+      .category-card h2 {
+        font-size: 26px !important;
+        margin: 6px 0 4px !important;
+      }
+
+      .category-card p {
+        font-size: 15px !important;
+        margin: 0 !important;
+      }
+
+      .icon-box {
+        width: 42px !important;
+        height: 42px !important;
+        font-size: 24px !important;
+      }
+
+      .play-now { display: none !important; }
+
+      .stage-icon {
+        width: 78px !important;
+        height: 78px !important;
+        font-size: 40px !important;
+        margin: 8px auto 8px !important;
+        box-shadow: 0 7px 0 #d19a00, 0 14px 18px rgba(0,0,0,.16), inset 0 0 0 5px rgba(255,255,255,.45) !important;
+      }
+
+      .stage-label { font-size: 13px !important; }
+
+      .stage-title {
+        font-size: clamp(34px, 11vw, 52px) !important;
+        margin: 4px 0 6px !important;
+      }
+
+      .stage-sub {
+        font-size: 15px !important;
+        margin-bottom: 12px !important;
+      }
+
+      .choice-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+      }
+
+      .stage-card {
+        min-height: 118px !important;
+        padding: 16px 14px !important;
+        border-radius: 18px !important;
+        box-shadow: 0 7px 0 rgba(4,70,150,.5), 0 12px 18px rgba(0,0,0,.14) !important;
+      }
+
+      .stage-card .num {
+        top: 12px !important;
+        right: 14px !important;
+        font-size: 15px !important;
+      }
+
+      .stage-card h2 {
+        margin: 30px 0 8px !important;
+        font-size: 24px !important;
+      }
+
+      .stage-card p { font-size: 15px !important; }
+
+      .quiz-title {
+        font-size: 38px !important;
+        margin-top: 0 !important;
+      }
+
+      .question-badge {
+        width: 48px !important;
+        height: 48px !important;
+        font-size: 24px !important;
+        top: 10px !important;
+      }
+
+      .quiz-pill {
+        min-width: 140px !important;
+        padding: 8px 18px !important;
+        margin-top: 7px !important;
+        font-size: 15px !important;
+      }
+
+      .quiz-meta-row {
+        margin-top: 28px !important;
+        font-size: 14px !important;
+      }
+
+      .math-problem {
+        margin: 34px 0 22px !important;
+        font-size: clamp(54px, 18vw, 76px) !important;
+      }
+
+      .answer-grid { gap: 10px !important; }
+
+      .answer-choice {
+        min-height: 58px !important;
+        border-radius: 16px !important;
+        padding: 0 14px !important;
+        gap: 12px !important;
+        font-size: 24px !important;
+        box-shadow: 0 6px 0 rgba(4,70,150,.48) !important;
+      }
+
+      .answer-choice .letter {
+        width: 42px !important;
+        height: 42px !important;
+        box-shadow: 0 5px 0 #c91b52 !important;
+      }
+
+      .choose-answer {
+        margin: 14px 0 8px !important;
+        font-size: 20px !important;
+      }
+
+      .yellow-control {
+        width: 118px !important;
+        height: 52px !important;
+        font-size: 30px !important;
+      }
+
+      .timer-line {
+        height: 21px !important;
+        margin-top: 14px !important;
+      }
+
+      .timer-seconds {
+        font-size: 16px !important;
+        margin-left: 8px !important;
       }
     }
   `;
@@ -164,9 +377,20 @@ function applyAminaPatch() {
           { transform: 'translateY(-4px)' },
           { transform: 'translateY(0)' }
         ],
-        { duration: 180, easing: 'ease-out' }
+        { duration: 120, easing: 'ease-out' }
       );
     };
+  });
+
+  document.querySelectorAll('[data-level]').forEach((button) => {
+    if (button.dataset.autoStartReady === 'yes') return;
+    button.dataset.autoStartReady = 'yes';
+    button.addEventListener('click', () => {
+      setTimeout(() => {
+        const start = document.querySelector('#startBtn');
+        if (start) start.click();
+      }, 0);
+    });
   });
 
   document.querySelectorAll('.game-page .stage-top').forEach((top) => {
