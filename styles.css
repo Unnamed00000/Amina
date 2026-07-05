@@ -200,9 +200,10 @@ button {
   color: #064a9f;
   border-radius: 8px;
   padding: 11px 14px;
-  font-weight: 1000;
-  font-size: 13px;
+  font-weight: 600;
+  font-size: clamp(13px, 1vw, 16px);
   box-shadow: 0 5px 0 rgba(6, 90, 170, 0.23);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
   text-transform: uppercase;
 }
 
@@ -222,10 +223,11 @@ button {
 }
 
 .subtitle {
-  font-size: clamp(14px, 1.1vw, 18px);
-  font-weight: 800;
+  font-size: clamp(13px, 1vw, 16px);
+  font-weight: 500;
   margin: 20px 0 0;
   color: rgba(255,255,255,0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
 }
 
 .cards {
