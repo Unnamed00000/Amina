@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Lilita+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Lilita+One&family=Rubik+Mono+One&family=Noto+Sans+Georgian:wght@900&display=swap');
 
 :root {
-  --fun-font: 'Luckiest Guy', 'Lilita One', 'Arial Black', 'Trebuchet MS', system-ui, sans-serif;
+  --fun-font: 'Luckiest Guy', 'Lilita One', 'Rubik Mono One', 'Noto Sans Georgian', 'Arial Black', 'Trebuchet MS', system-ui, sans-serif;
+  --home-font: 'Luckiest Guy', 'Lilita One', 'Rubik Mono One', 'Noto Sans Georgian', 'Arial Black', system-ui, sans-serif;
 }
 
 body {
@@ -25,10 +26,22 @@ body {
     0 10px 22px rgba(0, 0, 0, 0.28);
 }
 
+.hero,
+.cards,
+.title,
+.subtitle,
+.pill,
+.category-card,
+.category-card h2,
+.category-card p,
+.play-now,
+.result-title {
+  font-family: var(--home-font);
+}
+
 .title,
 .category-card h2,
 .result-title {
-  font-family: var(--fun-font);
   letter-spacing: 1.5px;
 }
 
@@ -47,9 +60,20 @@ body {
     0 16px 30px rgba(0, 0, 0, 0.25);
 }
 
-.subtitle,
+.subtitle {
+  color: #ffffff;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  text-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.78),
+    0 4px 0 rgba(0, 54, 125, 0.50),
+    0 9px 18px rgba(0, 0, 0, 0.34);
+}
+
 .pill {
-  text-shadow: 0 2px 0 rgba(0, 52, 120, 0.45), 0 7px 16px rgba(0, 0, 0, 0.16);
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.22),
+    0 4px 10px rgba(0, 0, 0, 0.18);
 }
 
 .question,
@@ -61,12 +85,8 @@ body {
     0 8px 18px rgba(0, 0, 0, 0.22);
 }
 
-.pill,
-.play-now,
 .circle-btn,
 .lang-option,
-.category-card p,
-.subtitle,
 .back-btn,
 .next-btn,
 .main-btn,
@@ -79,6 +99,12 @@ body {
   font-size: clamp(30px, 2.7vw, 44px);
   letter-spacing: 0.5px;
   text-shadow: 0 3px 0 rgba(8, 20, 48, 0.13);
+}
+
+.category-card p,
+.play-now {
+  font-weight: 900;
+  letter-spacing: 0.25px;
 }
 
 .category-card {
@@ -96,5 +122,10 @@ body {
 
   .title {
     letter-spacing: 0.5px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    line-height: 1.35;
   }
 }
