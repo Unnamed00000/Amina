@@ -1,1 +1,24 @@
-{"name":"Amina","short_name":"Amina","description":"Amina learning app","start_url":"./","scope":"./","display":"standalone","orientation":"portrait-primary","background_color":"#1487f5","theme_color":"#1487f5","icons":[{"src":"./icons/icon.svg","sizes":"any","type":"image/svg+xml"}]}
+{
+  "name": "Amina-App",
+  "short_name": "Amina",
+  "description": "Amina-App learning game for kids",
+  "id": "/Amina/",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#1487f5",
+  "theme_color": "#1487f5",
+  "categories": ["education", "games", "kids"],
+  "lang": "da",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
