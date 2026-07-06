@@ -9,7 +9,6 @@ const AMINA_LANGS = [
 let aminaInstallPrompt = null;
 
 window.addEventListener('beforeinstallprompt', (event) => {
-  event.preventDefault();
   aminaInstallPrompt = event;
   window.dispatchEvent(new Event('amina-install-ready'));
 });
@@ -39,7 +38,7 @@ async function aminaRunInstall(installButton) {
     return;
   }
 
-  if (!aminaInstallPrompt) {
+  if (!aminaInstallPrompt || !aminaInstallPrompt.prompt) {
     alert(aminaInstallHelpText());
     return;
   }
