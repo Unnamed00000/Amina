@@ -1,12 +1,12 @@
-const CACHE_NAME = 'amina-pwa-v14';
+const CACHE_NAME = 'amina-pwa-v15';
 const APP_SHELL = [
   './',
   './index.html',
-  './styles.css?v=14',
-  './theme.css?v=14',
-  './app.js?v=14',
-  './patch.js?v=14',
-  './manifest.json?v=14',
+  './styles.css?v=15',
+  './theme.css?v=15',
+  './app.js?v=15',
+  './patch.js?v=15',
+  './manifest.json?v=15',
   './icons/icon.svg'
 ];
 
