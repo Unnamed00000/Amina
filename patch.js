@@ -128,9 +128,20 @@ function applyAminaPatch() {
     .start-row,
     #startBtn { display: none !important; }
 
+    .quiz-stage .question-badge {
+      top: 118px !important;
+      left: 0 !important;
+      width: 76px !important;
+      height: 76px !important;
+      font-size: 34px !important;
+      z-index: 1 !important;
+      pointer-events: none !important;
+    }
+
     @media (max-width: 620px) {
       html, body {
         width: 100% !important;
+        max-width: 100vw !important;
         min-height: 100% !important;
         overflow-x: hidden !important;
         overflow-y: auto !important;
@@ -142,9 +153,36 @@ function applyAminaPatch() {
         touch-action: pan-y !important;
       }
 
-      .app-shell,
-      .page,
-      .game-page,
+      .app-shell {
+        width: 100% !important;
+        max-width: 100vw !important;
+        margin: 0 !important;
+        min-height: 100dvh !important;
+        height: auto !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
+        overscroll-behavior-y: contain !important;
+      }
+
+      .page {
+        width: calc(100% - 18px) !important;
+        min-height: 100dvh !important;
+        height: auto !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
+        padding: 10px 0 12px !important;
+        box-sizing: border-box !important;
+      }
+
+      .game-page {
+        width: 100% !important;
+        max-width: 100vw !important;
+        margin: 0 auto !important;
+        padding: 8px 12px 16px !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+      }
+
       .quiz-stage {
         width: calc(100% - 18px) !important;
         min-height: 100dvh !important;
@@ -153,23 +191,36 @@ function applyAminaPatch() {
         overflow-y: visible !important;
         padding: 10px 0 12px !important;
         box-sizing: border-box !important;
-        overscroll-behavior-y: contain !important;
       }
 
       .topbar,
       .stage-top {
+        width: 100% !important;
         height: 48px !important;
         min-height: 48px !important;
-        margin-bottom: 4px !important;
+        margin-bottom: 2px !important;
+        box-sizing: border-box !important;
       }
 
+      .stage-back { left: 0 !important; }
+      .stage-actions { right: 0 !important; }
+
       .logo::before,
-      .app-shell .stage-logo { font-size: 30px !important; }
+      .app-shell .stage-logo {
+        font-size: 26px !important;
+        max-width: calc(100% - 116px) !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        text-align: center !important;
+      }
 
       .circle-btn,
-      .round-control {
+      .round-control,
+      .stage-back {
         width: 44px !important;
         height: 44px !important;
+        font-size: 24px !important;
         box-shadow: 0 4px 0 rgba(5,75,160,.38), 0 10px 16px rgba(0,0,0,.14) !important;
       }
 
@@ -184,13 +235,6 @@ function applyAminaPatch() {
 
       .top-actions,
       .stage-actions { gap: 8px !important; }
-
-      .stage-back {
-        width: 44px !important;
-        height: 44px !important;
-        font-size: 24px !important;
-        box-shadow: 0 4px 0 rgba(5,75,160,.38), 0 10px 16px rgba(0,0,0,.14) !important;
-      }
 
       .hero { padding-top: 4px !important; }
 
@@ -244,67 +288,109 @@ function applyAminaPatch() {
       .play-now { display: none !important; }
 
       .stage-icon {
-        width: 78px !important;
-        height: 78px !important;
-        font-size: 40px !important;
-        margin: 8px auto 8px !important;
-        box-shadow: 0 7px 0 #d19a00, 0 14px 18px rgba(0,0,0,.16), inset 0 0 0 5px rgba(255,255,255,.45) !important;
+        width: 62px !important;
+        height: 62px !important;
+        font-size: 32px !important;
+        margin: 2px auto 5px !important;
+        box-shadow: 0 6px 0 #d19a00, 0 12px 16px rgba(0,0,0,.16), inset 0 0 0 5px rgba(255,255,255,.45) !important;
       }
 
-      .stage-label { font-size: 13px !important; }
-
-      .stage-title {
-        font-size: clamp(34px, 11vw, 52px) !important;
-        margin: 4px 0 6px !important;
-      }
-
-      .stage-sub {
-        font-size: 15px !important;
-        margin-bottom: 12px !important;
-      }
-
-      .choice-grid {
-        grid-template-columns: 1fr 1fr !important;
-        gap: 10px !important;
-      }
-
-      .stage-card {
-        min-height: 118px !important;
-        padding: 16px 14px !important;
-        border-radius: 18px !important;
-        box-shadow: 0 7px 0 rgba(4,70,150,.5), 0 12px 18px rgba(0,0,0,.14) !important;
-      }
-
-      .stage-card .num {
-        top: 12px !important;
-        right: 14px !important;
-        font-size: 15px !important;
-      }
-
-      .stage-card h2 {
-        margin: 30px 0 8px !important;
-        font-size: 24px !important;
-      }
-
-      .stage-card p { font-size: 15px !important; }
-
-      .quiz-title {
-        font-size: 38px !important;
+      .stage-label {
+        font-size: 10px !important;
         margin-top: 0 !important;
       }
 
-      .question-badge {
-        width: 48px !important;
-        height: 48px !important;
-        font-size: 24px !important;
-        top: 10px !important;
+      .stage-title {
+        font-size: 31px !important;
+        line-height: .95 !important;
+        margin: 2px auto 5px !important;
+        max-width: 100% !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+      }
+
+      .stage-sub {
+        font-size: 12px !important;
+        line-height: 1.15 !important;
+        margin: 0 auto 8px !important;
+        max-width: 94% !important;
+      }
+
+      .choice-grid {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        grid-auto-rows: 1fr !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+        margin: 0 !important;
+        overflow: visible !important;
+      }
+
+      .choice-grid > * { min-width: 0 !important; }
+
+      .stage-card {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        min-height: 100px !important;
+        height: 100% !important;
+        padding: 12px 9px !important;
+        border-radius: 16px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+      }
+
+      .stage-card .num {
+        right: 9px !important;
+        top: 8px !important;
+        font-size: 13px !important;
+      }
+
+      .stage-card h2 {
+        font-size: 19px !important;
+        line-height: 1 !important;
+        margin: 22px 0 5px !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        hyphens: auto !important;
+      }
+
+      .stage-card p {
+        font-size: 11px !important;
+        line-height: 1.15 !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+      }
+
+      .quiz-stage .question-badge {
+        top: 124px !important;
+        left: 8px !important;
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 18px !important;
+        z-index: 1 !important;
+        pointer-events: none !important;
+      }
+
+      .quiz-title {
+        font-size: 36px !important;
+        max-width: calc(100% - 96px) !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
       }
 
       .quiz-pill {
-        min-width: 140px !important;
-        padding: 8px 18px !important;
-        margin-top: 7px !important;
-        font-size: 15px !important;
+        min-width: 124px !important;
+        padding: 7px 14px !important;
+        margin-top: 10px !important;
+        font-size: 13px !important;
       }
 
       .quiz-meta-row {
@@ -353,6 +439,90 @@ function applyAminaPatch() {
       .timer-seconds {
         font-size: 16px !important;
         margin-left: 8px !important;
+      }
+
+      html[lang="ru"] .game-page {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+      }
+
+      html[lang="ru"] .stage-title {
+        font-size: 26px !important;
+        line-height: .95 !important;
+      }
+
+      html[lang="ru"] .stage-sub {
+        font-size: 11px !important;
+        line-height: 1.12 !important;
+        margin-bottom: 7px !important;
+      }
+
+      html[lang="ru"] .choice-grid {
+        gap: 7px !important;
+      }
+
+      html[lang="ru"] .stage-card {
+        min-height: 98px !important;
+        padding: 10px 7px !important;
+      }
+
+      html[lang="ru"] .stage-card h2 {
+        font-size: 15px !important;
+        line-height: 1.02 !important;
+        margin: 20px 0 4px !important;
+        letter-spacing: 0 !important;
+        white-space: normal !important;
+        text-align: left !important;
+      }
+
+      html[lang="ru"] .stage-card p {
+        font-size: 9.5px !important;
+        line-height: 1.1 !important;
+        letter-spacing: 0 !important;
+      }
+
+      html[lang="ru"] .quiz-stage .question-badge {
+        top: 132px !important;
+        left: 8px !important;
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 17px !important;
+      }
+
+      html[lang="ru"] .quiz-title {
+        font-size: 30px !important;
+        max-width: calc(100% - 112px) !important;
+        line-height: .95 !important;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .game-page {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+      }
+
+      .stage-title { font-size: 28px !important; }
+
+      .stage-card {
+        min-height: 96px !important;
+        padding: 10px 7px !important;
+      }
+
+      .stage-card h2 { font-size: 17px !important; }
+      .stage-card p { font-size: 10px !important; }
+      .choice-grid { gap: 7px !important; }
+
+      html[lang="ru"] .stage-title { font-size: 24px !important; }
+      html[lang="ru"] .stage-card h2 { font-size: 14px !important; }
+      html[lang="ru"] .stage-card p { font-size: 9px !important; }
+      html[lang="ru"] .quiz-title { font-size: 28px !important; }
+
+      html[lang="ru"] .quiz-stage .question-badge {
+        top: 136px !important;
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 16px !important;
       }
     }
   `;
