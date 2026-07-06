@@ -6,6 +6,74 @@ const AMINA_LANGS = [
   ['de', 'Deutsch', '🇩🇪']
 ];
 
+const AMINA_APP_VERSION = 'v1.0.24';
+const AMINA_APP_CREATOR = 'Adam Margoev';
+
+function aminaLabel(key) {
+  const lang = localStorage.aminaLang || document.documentElement.lang || 'en';
+  const labels = {
+    ru: {
+      settings: 'Настройки',
+      app: 'Приложение',
+      force: '🔄 Форс обновление',
+      about: 'ℹ️ О приложении',
+      version: 'Версия',
+      creator: 'Создатель'
+    },
+    da: {
+      settings: 'Settings',
+      app: 'App',
+      force: '🔄 Force update',
+      about: 'ℹ️ Om appen',
+      version: 'Version',
+      creator: 'Skaber'
+    },
+    ka: {
+      settings: 'Settings',
+      app: 'App',
+      force: '🔄 განახლება',
+      about: 'ℹ️ აპის შესახებ',
+      version: 'ვერსია',
+      creator: 'შემქმნელი'
+    },
+    de: {
+      settings: 'Settings',
+      app: 'App',
+      force: '🔄 Update erzwingen',
+      about: 'ℹ️ Über die App',
+      version: 'Version',
+      creator: 'Ersteller'
+    },
+    en: {
+      settings: 'Settings',
+      app: 'App',
+      force: '🔄 Force update',
+      about: 'ℹ️ About app',
+      version: 'Version',
+      creator: 'Creator'
+    }
+  };
+  return (labels[lang] && labels[lang][key]) || labels.en[key] || key;
+}
+
+async function aminaForceUpdate() {
+  try {
+    if ('caches' in window) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map((key) => caches.delete(key)));
+    }
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map((reg) => reg.update().catch(() => null)));
+    }
+  } catch (error) {
+    console.warn('Force update failed', error);
+  }
+  const url = new URL(window.location.href);
+  url.searchParams.set('fresh', Date.now().toString());
+  window.location.replace(url.toString());
+}
+
 function aminaSettingsPatch() {
   let style = document.querySelector('#aminaSettingsStyles');
   if (!style) {
@@ -60,7 +128,7 @@ function aminaSettingsPatch() {
       position: absolute !important;
       right: 0 !important;
       top: calc(100% + 14px) !important;
-      min-width: 230px !important;
+      min-width: 248px !important;
       padding: 14px !important;
       border-radius: 24px !important;
       background: rgba(255,255,255,.96) !important;
@@ -73,7 +141,8 @@ function aminaSettingsPatch() {
       display: block !important;
     }
 
-    .amina-settings-title {
+    .amina-settings-title,
+    .amina-settings-section-title {
       font-family: Arial, Helvetica, system-ui, sans-serif !important;
       font-size: 14px !important;
       font-weight: 900 !important;
@@ -83,8 +152,24 @@ function aminaSettingsPatch() {
       text-transform: uppercase !important;
     }
 
+    .amina-settings-section-title {
+      font-size: 12px !important;
+      margin: 2px 0 9px !important;
+      color: #5a4300 !important;
+    }
+
+    .amina-settings-divider {
+      width: 100% !important;
+      height: 2px !important;
+      margin: 12px 0 10px !important;
+      border-radius: 99px !important;
+      background: rgba(11,97,201,.18) !important;
+    }
+
     .amina-settings-sound,
-    .amina-settings-language-toggle {
+    .amina-settings-language-toggle,
+    .amina-settings-force-update,
+    .amina-settings-about-toggle {
       width: 100% !important;
       border: 0 !important;
       border-radius: 18px !important;
@@ -104,6 +189,17 @@ function aminaSettingsPatch() {
       background: #ffd529 !important;
       color: #5a4300 !important;
       box-shadow: 0 6px 0 #d49b00 !important;
+    }
+
+    .amina-settings-force-update {
+      background: #25c46b !important;
+      box-shadow: 0 6px 0 #0b9444 !important;
+    }
+
+    .amina-settings-about-toggle {
+      background: #ff8a28 !important;
+      box-shadow: 0 6px 0 #c75a00 !important;
+      margin-bottom: 8px !important;
     }
 
     .amina-settings-langs {
@@ -136,6 +232,31 @@ function aminaSettingsPatch() {
       color: #5a4300 !important;
     }
 
+    .amina-settings-about-box {
+      display: none !important;
+      padding: 11px 12px !important;
+      border-radius: 16px !important;
+      background: #eef6ff !important;
+      color: #0b61c9 !important;
+      font-family: Arial, Helvetica, system-ui, sans-serif !important;
+      font-size: 14px !important;
+      font-weight: 900 !important;
+      line-height: 1.45 !important;
+      box-shadow: inset 0 0 0 2px rgba(11,97,201,.12) !important;
+      text-align: left !important;
+    }
+
+    .amina-settings-about-box.open {
+      display: block !important;
+    }
+
+    .amina-settings-about-name {
+      font-size: 16px !important;
+      color: #5a4300 !important;
+      margin-bottom: 4px !important;
+      text-align: center !important;
+    }
+
     @media (max-width: 620px) {
       .amina-settings-gear {
         width: 44px !important;
@@ -150,13 +271,15 @@ function aminaSettingsPatch() {
 
       .amina-settings-panel {
         top: calc(100% + 10px) !important;
-        min-width: 210px !important;
+        min-width: 224px !important;
         padding: 12px !important;
         border-radius: 20px !important;
       }
 
       .amina-settings-sound,
-      .amina-settings-language-toggle {
+      .amina-settings-language-toggle,
+      .amina-settings-force-update,
+      .amina-settings-about-toggle {
         font-size: 16px !important;
         padding: 11px !important;
       }
@@ -177,10 +300,19 @@ function aminaSettingsPatch() {
       <svg viewBox="0 0 24 24"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.04.04a2 2 0 1 1-2.83 2.83l-.04-.04A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6V20a2 2 0 1 1-4 0v-.06a1.7 1.7 0 0 0-1-.6 1.7 1.7 0 0 0-1.87.34l-.04.04a2 2 0 1 1-2.83-2.83l.04-.04A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1H4a2 2 0 1 1 0-4h.06a1.7 1.7 0 0 0 .6-1 1.7 1.7 0 0 0-.34-1.87l-.04-.04a2 2 0 1 1 2.83-2.83l.04.04A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6V4a2 2 0 1 1 4 0v.06a1.7 1.7 0 0 0 1 .6 1.7 1.7 0 0 0 1.87-.34l.04-.04a2 2 0 1 1 2.83 2.83l-.04.04A1.7 1.7 0 0 0 19.4 9c.14.35.36.68.6 1H20a2 2 0 1 1 0 4h-.06c-.24.32-.46.65-.54 1z"></path></svg>
     </button>
     <div class="amina-settings-panel">
-      <div class="amina-settings-title">Settings</div>
+      <div class="amina-settings-title">${aminaLabel('settings')}</div>
       <button class="amina-settings-sound" type="button">🔊 Sound</button>
       <button class="amina-settings-language-toggle" type="button">🌐 Language</button>
       <div class="amina-settings-langs"></div>
+      <div class="amina-settings-divider"></div>
+      <div class="amina-settings-section-title">${aminaLabel('app')}</div>
+      <button class="amina-settings-force-update" type="button">${aminaLabel('force')}</button>
+      <button class="amina-settings-about-toggle" type="button">${aminaLabel('about')}</button>
+      <div class="amina-settings-about-box">
+        <div class="amina-settings-about-name">Amina-App</div>
+        <div>${aminaLabel('version')}: ${AMINA_APP_VERSION}</div>
+        <div>${aminaLabel('creator')}: ${AMINA_APP_CREATOR}</div>
+      </div>
     </div>
   `;
 
@@ -191,6 +323,9 @@ function aminaSettingsPatch() {
   const soundButton = wrap.querySelector('.amina-settings-sound');
   const langToggle = wrap.querySelector('.amina-settings-language-toggle');
   const langsBox = wrap.querySelector('.amina-settings-langs');
+  const forceUpdateButton = wrap.querySelector('.amina-settings-force-update');
+  const aboutButton = wrap.querySelector('.amina-settings-about-toggle');
+  const aboutBox = wrap.querySelector('.amina-settings-about-box');
 
   const updateSoundLabel = () => {
     soundButton.textContent = localStorage.aminaSound === 'off' ? '🔇 Sound' : '🔊 Sound';
@@ -201,7 +336,10 @@ function aminaSettingsPatch() {
     event.preventDefault();
     event.stopPropagation();
     panel.classList.toggle('open');
-    if (!panel.classList.contains('open')) langsBox.classList.remove('open');
+    if (!panel.classList.contains('open')) {
+      langsBox.classList.remove('open');
+      aboutBox.classList.remove('open');
+    }
   });
 
   soundButton.addEventListener('click', (event) => {
@@ -225,7 +363,21 @@ function aminaSettingsPatch() {
   langToggle.addEventListener('click', (event) => {
     event.preventDefault();
     event.stopPropagation();
+    aboutBox.classList.remove('open');
     langsBox.classList.toggle('open');
+  });
+
+  forceUpdateButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    aminaForceUpdate();
+  });
+
+  aboutButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    langsBox.classList.remove('open');
+    aboutBox.classList.toggle('open');
   });
 
   langsBox.querySelectorAll('[data-amina-lang]').forEach((button) => {
@@ -243,6 +395,7 @@ function aminaSettingsPatch() {
     if (!wrap.contains(event.target)) {
       panel.classList.remove('open');
       langsBox.classList.remove('open');
+      aboutBox.classList.remove('open');
     }
   });
 }
