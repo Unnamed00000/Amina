@@ -1,14 +1,16 @@
-const CACHE_NAME = 'amina-pwa-v21';
+const CACHE_NAME = 'amina-pwa-v22';
 const APP_SHELL = [
   './',
   './index.html',
-  './styles.css?v=21',
-  './theme.css?v=21',
-  './app.js?v=21',
-  './patch.js?v=21',
-  './settings.js?v=21',
-  './manifest.json?v=21',
-  './icons/icon.svg'
+  './styles.css?v=22',
+  './theme.css?v=22',
+  './app.js?v=22',
+  './patch.js?v=22',
+  './settings.js?v=22',
+  './manifest.json?v=22',
+  './icons/icon.svg',
+  './icons/icon-192.svg',
+  './icons/icon-512.svg'
 ];
 
 self.addEventListener('install', (event) => {
