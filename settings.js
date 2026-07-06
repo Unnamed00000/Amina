@@ -6,49 +6,6 @@ const AMINA_LANGS = [
   ['de', 'Deutsch', '🇩🇪']
 ];
 
-let aminaInstallPrompt = null;
-
-window.addEventListener('beforeinstallprompt', (event) => {
-  aminaInstallPrompt = event;
-  window.dispatchEvent(new Event('amina-install-ready'));
-});
-
-window.addEventListener('appinstalled', () => {
-  aminaInstallPrompt = null;
-  localStorage.aminaInstalled = 'yes';
-  window.dispatchEvent(new Event('amina-install-ready'));
-});
-
-function aminaIsStandalone() {
-  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-}
-
-function aminaInstallHelpText() {
-  const lang = localStorage.aminaLang || document.documentElement.lang || 'en';
-  if (lang === 'ru') return 'Если окно установки не открылось, открой меню браузера ⋮ и выбери «Установить приложение» или «Добавить на главный экран».';
-  if (lang === 'da') return 'Åbn browsermenuen ⋮ og vælg Installer app eller Føj til startskærm.';
-  if (lang === 'ka') return 'გახსენით ბრაუზერის მენიუ ⋮ და აირჩიეთ აპის დაყენება ან მთავარ ეკრანზე დამატება.';
-  if (lang === 'de') return 'Öffne das Browsermenü ⋮ und wähle App installieren oder Zum Startbildschirm hinzufügen.';
-  return 'Open the browser menu ⋮ and choose Install app or Add to home screen.';
-}
-
-async function aminaRunInstall(installButton) {
-  if (aminaIsStandalone()) {
-    installButton.classList.add('hidden');
-    return;
-  }
-
-  if (!aminaInstallPrompt || !aminaInstallPrompt.prompt) {
-    alert(aminaInstallHelpText());
-    return;
-  }
-
-  aminaInstallPrompt.prompt();
-  await aminaInstallPrompt.userChoice.catch(() => null);
-  aminaInstallPrompt = null;
-  if (aminaIsStandalone()) installButton.classList.add('hidden');
-}
-
 function aminaSettingsPatch() {
   let style = document.querySelector('#aminaSettingsStyles');
   if (!style) {
@@ -66,7 +23,14 @@ function aminaSettingsPatch() {
       display: none !important;
     }
 
-    .amina-install-row-button,
+    .amina-settings-wrap {
+      position: relative !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex: 0 0 auto !important;
+    }
+
     .amina-settings-gear {
       width: 72px !important;
       height: 72px !important;
@@ -79,24 +43,6 @@ function aminaSettingsPatch() {
       place-items: center !important;
       cursor: pointer !important;
       padding: 0 !important;
-      font-size: 32px !important;
-      line-height: 1 !important;
-      flex: 0 0 auto !important;
-    }
-
-    .amina-install-row-button {
-      color: #0b9444 !important;
-    }
-
-    .amina-install-row-button.hidden {
-      display: none !important;
-    }
-
-    .amina-settings-wrap {
-      position: relative !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
       flex: 0 0 auto !important;
     }
 
@@ -191,11 +137,9 @@ function aminaSettingsPatch() {
     }
 
     @media (max-width: 620px) {
-      .amina-install-row-button,
       .amina-settings-gear {
         width: 44px !important;
         height: 44px !important;
-        font-size: 22px !important;
         box-shadow: 0 4px 0 rgba(5,75,160,.38), 0 10px 16px rgba(0,0,0,.14) !important;
       }
 
@@ -219,32 +163,10 @@ function aminaSettingsPatch() {
     }
   `;
 
-  document.querySelectorAll('.stage-actions .amina-settings-wrap, .stage-actions .amina-install-row-button').forEach((item) => item.remove());
+  document.querySelectorAll('.stage-actions .amina-settings-wrap, .amina-install-row-button').forEach((item) => item.remove());
 
   const toolbar = document.querySelector('.top-actions');
   if (!toolbar) return;
-
-  let installRowButton = toolbar.querySelector('.amina-install-row-button');
-  if (!installRowButton) {
-    installRowButton = document.createElement('button');
-    installRowButton.className = 'amina-install-row-button';
-    installRowButton.type = 'button';
-    installRowButton.setAttribute('aria-label', 'Install app');
-    installRowButton.textContent = '📲';
-    toolbar.appendChild(installRowButton);
-    installRowButton.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      aminaRunInstall(installRowButton);
-    });
-  }
-
-  const updateInstallButton = () => {
-    if (aminaIsStandalone()) installRowButton.classList.add('hidden');
-    else installRowButton.classList.remove('hidden');
-  };
-  updateInstallButton();
-  window.addEventListener('amina-install-ready', updateInstallButton);
 
   if (toolbar.querySelector('.amina-settings-wrap')) return;
 
