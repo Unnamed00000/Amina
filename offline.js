@@ -1,12 +1,12 @@
-const CACHE_NAME = 'amina-pwa-v13';
+const CACHE_NAME = 'amina-pwa-v14';
 const APP_SHELL = [
   './',
   './index.html',
-  './styles.css?v=13',
-  './theme.css?v=13',
-  './app.js?v=13',
-  './patch.js?v=13',
-  './manifest.json?v=13',
+  './styles.css?v=14',
+  './theme.css?v=14',
+  './app.js?v=14',
+  './patch.js?v=14',
+  './manifest.json?v=14',
   './icons/icon.svg'
 ];
 
@@ -30,16 +30,12 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-
-      return fetch(event.request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-          return response;
-        })
-        .catch(() => caches.match('./index.html').then((fallback) => fallback || caches.match('./')));
-    })
+    fetch(event.request)
+      .then((response) => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        return response;
+      })
+      .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./index.html').then((fallback) => fallback || caches.match('./'))))
   );
 });
