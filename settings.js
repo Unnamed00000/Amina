@@ -6,6 +6,42 @@ const AMINA_LANGS = [
   ['de', 'Deutsch', '🇩🇪']
 ];
 
+let aminaInstallPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  aminaInstallPrompt = event;
+  window.dispatchEvent(new Event('amina-install-ready'));
+});
+
+window.addEventListener('appinstalled', () => {
+  aminaInstallPrompt = null;
+  localStorage.aminaInstalled = 'yes';
+  window.dispatchEvent(new Event('amina-install-ready'));
+});
+
+function aminaIsStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function aminaInstallText() {
+  const lang = localStorage.aminaLang || document.documentElement.lang || 'en';
+  if (lang === 'ru') return '📲 Установить приложение';
+  if (lang === 'da') return '📲 Installer app';
+  if (lang === 'ka') return '📲 აპის დაყენება';
+  if (lang === 'de') return '📲 App installieren';
+  return '📲 Install App';
+}
+
+function aminaInstallHelpText() {
+  const lang = localStorage.aminaLang || document.documentElement.lang || 'en';
+  if (lang === 'ru') return 'Если кнопка браузера не появилась, открой меню браузера ⋮ и выбери «Установить приложение» или «Добавить на главный экран».';
+  if (lang === 'da') return 'Åbn browsermenuen ⋮ og vælg Installer app eller Føj til startskærm.';
+  if (lang === 'ka') return 'გახსენით ბრაუზერის მენიუ ⋮ და აირჩიეთ აპის დაყენება ან მთავარ ეკრანზე დამატება.';
+  if (lang === 'de') return 'Öffne das Browsermenü ⋮ und wähle App installieren oder Zum Startbildschirm hinzufügen.';
+  return 'Open the browser menu ⋮ and choose Install app or Add to home screen.';
+}
+
 function aminaSettingsPatch() {
   let style = document.querySelector('#aminaSettingsStyles');
   if (!style) {
@@ -82,6 +118,7 @@ function aminaSettingsPatch() {
     }
 
     .amina-settings-sound,
+    .amina-settings-install,
     .amina-settings-language-toggle {
       width: 100% !important;
       border: 0 !important;
@@ -96,6 +133,15 @@ function aminaSettingsPatch() {
       box-shadow: 0 6px 0 #0860b9 !important;
       margin-bottom: 12px !important;
       text-align: center !important;
+    }
+
+    .amina-settings-install {
+      background: #25c46b !important;
+      box-shadow: 0 6px 0 #0b9444 !important;
+    }
+
+    .amina-settings-install.hidden {
+      display: none !important;
     }
 
     .amina-settings-language-toggle {
@@ -154,6 +200,7 @@ function aminaSettingsPatch() {
       }
 
       .amina-settings-sound,
+      .amina-settings-install,
       .amina-settings-language-toggle {
         font-size: 16px !important;
         padding: 11px !important;
@@ -177,6 +224,7 @@ function aminaSettingsPatch() {
     <div class="amina-settings-panel">
       <div class="amina-settings-title">Settings</div>
       <button class="amina-settings-sound" type="button">🔊 Sound</button>
+      <button class="amina-settings-install" type="button">📲 Install App</button>
       <button class="amina-settings-language-toggle" type="button">🌐 Language</button>
       <div class="amina-settings-langs"></div>
     </div>
@@ -187,6 +235,7 @@ function aminaSettingsPatch() {
   const panel = wrap.querySelector('.amina-settings-panel');
   const gear = wrap.querySelector('.amina-settings-gear');
   const soundButton = wrap.querySelector('.amina-settings-sound');
+  const installButton = wrap.querySelector('.amina-settings-install');
   const langToggle = wrap.querySelector('.amina-settings-language-toggle');
   const langsBox = wrap.querySelector('.amina-settings-langs');
 
@@ -194,6 +243,14 @@ function aminaSettingsPatch() {
     soundButton.textContent = localStorage.aminaSound === 'off' ? '🔇 Sound' : '🔊 Sound';
   };
   updateSoundLabel();
+
+  const updateInstallButton = () => {
+    installButton.textContent = aminaInstallText();
+    if (aminaIsStandalone()) installButton.classList.add('hidden');
+    else installButton.classList.remove('hidden');
+  };
+  updateInstallButton();
+  window.addEventListener('amina-install-ready', updateInstallButton);
 
   gear.addEventListener('click', (event) => {
     event.preventDefault();
@@ -210,6 +267,24 @@ function aminaSettingsPatch() {
     updateSoundLabel();
     const nativeButton = document.querySelector('#soundBtn') || document.querySelector('#soundRound');
     if (nativeButton) nativeButton.click();
+  });
+
+  installButton.addEventListener('click', async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (aminaIsStandalone()) {
+      installButton.classList.add('hidden');
+      return;
+    }
+    if (!aminaInstallPrompt) {
+      alert(aminaInstallHelpText());
+      return;
+    }
+    aminaInstallPrompt.prompt();
+    await aminaInstallPrompt.userChoice.catch(() => null);
+    aminaInstallPrompt = null;
+    updateInstallButton();
+    panel.classList.remove('open');
   });
 
   const currentLang = localStorage.aminaLang || document.documentElement.lang || 'en';
