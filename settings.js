@@ -18,7 +18,8 @@ function aminaSettingsPatch() {
     #soundBtn,
     #langBtn,
     #soundRound,
-    #languageMenu {
+    #languageMenu,
+    .patch-sound {
       display: none !important;
     }
 
@@ -160,7 +161,9 @@ function aminaSettingsPatch() {
     }
   `;
 
-  const toolbar = document.querySelector('.stage-actions') || document.querySelector('.top-actions');
+  document.querySelectorAll('.stage-actions .amina-settings-wrap').forEach((item) => item.remove());
+
+  const toolbar = document.querySelector('.top-actions');
   if (!toolbar) return;
 
   if (toolbar.querySelector('.amina-settings-wrap')) return;
